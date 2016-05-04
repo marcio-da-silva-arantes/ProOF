@@ -1,13 +1,8 @@
 #ignorar todos os diretorios listados abaixo em qualquer subdiretorio
 work_space/
-temp/
 build/
 dist/
-lib/
 trash/
-teste*/
-test/
-old/
 ignore/
 #ignorar todos os arquivos por extensao
 *~
@@ -21,7 +16,6 @@ ignore/
 *.err
 *.log
 *.lp
-*.pdf
 *.csv
 *.xlsx
 *.xls
