@@ -29,8 +29,6 @@ ignore/
 *.xls
 *.prj
 *.class
-*.png
-*.jpg
 /ProOFClient/nbproject/private/
 /ProOFLanguage/nbproject/private/
 /ProOFSlave/nbproject/private/
