@@ -14,7 +14,6 @@ ignore/
 *.rar
 *.zip
 *.o
-*.cfg
 *.tpl
 *.pof
 *.sgl
@@ -22,7 +21,6 @@ ignore/
 *.err
 *.log
 *.lp
-*.txt
 *.pdf
 *.csv
 *.xlsx

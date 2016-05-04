@@ -1,0 +1,5 @@
+1)	Frist configure the javac compiler on path
+2)	If you are using IBM Ilog Cplex them
+	* Copy the cplex.jar form IBM Ilog Cplex directory instalation to ./ProOFJava/lib/ directory
+	* Then copy the path cplex binaries (/bin/) in ./languages/Java.cfg (see this the file Java.cfg)
+3)	It's Alright, enjoy. 

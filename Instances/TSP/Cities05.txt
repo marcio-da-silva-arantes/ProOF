@@ -1,0 +1,10 @@
+Valor_otimo
+130.0
+Total_de_cidades
+5
+Matriz_dos_custos_dos_caminhos
+0		90		40		30 		50
+90		0		60		10 		15
+40		60		0		80		35
+30		10		80		0		20
+50		15		35		20		0 

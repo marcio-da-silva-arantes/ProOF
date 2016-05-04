@@ -1,0 +1,7 @@
+Portugues: Branch é uma nova estrutura FMS definida para que o ProOF suporte a
+implementação de métodos exatos como o Branch & Bound, esta mesma estrutura
+também é aproveitada para implementar heuríticas como o Greedy.
+
+English: Branch is a new FMS structure defined in the ProOF to support the
+implementation of exact methods like Branch & Bound, this same structure
+is also used to implement heuritics as Greedy.

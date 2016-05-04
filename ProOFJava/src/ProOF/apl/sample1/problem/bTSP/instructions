@@ -1,0 +1,7 @@
+Portugues: Aqui está exemplificado a implementation of the Traveling Salesman
+Problem (TSP) codificado para ser resolvido por métodos que enumeram ou constroem
+soluções gradativamente como: Branch & Bound, heuristica gulosa, enumeração completa...
+
+English: Here is exemplified the Implementation of the Traveling Salesman
+Problem (TSP) coded to be solved by methods that enumerate or build solutions
+incrementally as Branch & Bound, greedy heuristics, complete enumeration ...

@@ -1,0 +1,8 @@
+Portugues: Aqui está a implementação do Traveling Salesman Problem (TSP)
+codificado no ProOF para ser resolvido pelas metaheurísticas em geral que
+utilizam um ou mais dos operadores como: Crossover, Mutação, Movimento Local ou
+Inicialização.
+
+English: Here is the implementation of the Traveling Salesman Problem (TSP)
+encoded in the ProOF to be solved by general metaheuristics that use one or more
+of the operators such as Crossover, Mutation, LocalMove or Initialization.
