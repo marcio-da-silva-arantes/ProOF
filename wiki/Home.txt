@@ -1,0 +1,125 @@
+## Welcome to the homepage of ProOF
+
+ProOF (**Pro**fessional **O**ptimization **F**ramework) is a computational tool developed to assist professionals in implementing optimization methods and problem solving. The tool can be considered as a development environment (framework) and focuses primarily on guiding the implementation of computational methods and varied problems using the paradigm as object-oriented programming.
+
+### Information
+
+* Last version: [**ProOF 2.4**](https://github.com/marcio-da-silva-arantes/ProOF/)
+* Last update of the page: **May 04, 2016**
+* ProOF is online since: **June 13, 2013**
+
+### Team
+
+* Márcio S. Arantes ( marcio@icmc.usp.br, [curriculum lattes](http://lattes.cnpq.br/3242701534602412))
+* Claudio F. M. Toledo ( claudio@icmc.usp.br, [curriculum lattes](http://lattes.cnpq.br/0359360551958223))
+* André Missaglia ( andre.missaglia@gmail.com, [curriculum lattes](http://lattes.cnpq.br/5039202670475899))
+* Marcelo Hossomi ( marcelo.hossomi@gmail.com )
+
+### Content
+ 
+1. [Introduction](https://github.com/marcio-da-silva-arantes/ProOF/wiki#introduction)
+    *  [It used for?](https://github.com/marcio-da-silva-arantes/ProOF/wiki#it-used-for)
+    *  [Main features](https://github.com/marcio-da-silva-arantes/ProOF/wiki#main-features)
+    *  [Overview](https://github.com/marcio-da-silva-arantes/ProOF/wiki#overview)
+1. [Installation](https://github.com/marcio-da-silva-arantes/ProOF/wiki#installation)
+    *  [Requirements](https://github.com/marcio-da-silva-arantes/ProOF/wiki#requirements)
+    *  [Steps for installation](https://github.com/marcio-da-silva-arantes/ProOF/wiki#steps-for-installation)
+1. [Publications](https://github.com/marcio-da-silva-arantes/ProOF/wiki#publications)
+
+### Graphical abstract
+
+![Graphical abstract](https://raw.githubusercontent.com/marcio-da-silva-arantes/ProOF/master/wiki/project-proof6.png)
+
+***
+
+### Introduction
+
+The tool incorporates at the same environment the key features found in other literature tools, guide the implementation of methods and problem solving with high reuse of code, supports generating code in different programming languages ??and maintains a Graphical User Interface (GUI) for automatic parameterization methods entered by the user. Some published studies ([Publications](https://github.com/marcio-da-silva-arantes/ProOF/wiki#publications)) attest to the robustness of the tool, to incorporate the ProOF some methods that have been used for optimization and real problems.
+
+#### It used for?
+
+The environment is mainly used to guide the development of new problems and optimization methods.
+The ProOF does not limit the scope of the problems to be encoded and can be used for mono and multi-objective problems, also makes free the variables domain representation. So we can solve using the ProOF problems with continuous, discrete or mixed variable problems. Below are some examples of known problems and that can be encoded using the ProOF:
+
+* traveling salesman problem
+* knapsack problem
+* minimization of circuits
+* multimodal functions
+* vehicle routing problem
+* cutting and packing problems
+* general mono or multi-objective problems
+* general lot size and scheduling problems
+
+The environment does not restrict the type of approach to be used as resolution method, because it allows code heuristics, meta-heuristics and exact methods. Some common examples of methods and techniques used to solve optimization problems are listed below.
+
+* greedy heuristics 
+* dynamic programming techniques 
+* mathematical programming: simplex, dual, branch & bound 
+* local searches: simulated annealing, tabu search 
+* evolutionary algorithms: genetic algorithm, clonal selection algorithm, genetic programming 
+* swarm intelligence algorithm: ant colony, particle swarm optimization
+* hybrid methods
+
+#### Main features
+
+The main contributions of this environment and that differentiate it from other tools are:
+
+* Define an abstract architecture that enables the specialization of various methods and problems uniting these key features found in other tools.
+* Guide users in implementing methods and problem solving with high reuse code and libraries.
+* Allows the development of codes in different programming languages??.
+* Generate a Graphical User Interface (GUI) for automatic parameterization methods entered by the user.
+
+
+#### Overview
+
+The ProOF allows for its users the development of code in different programming languages. The structure of the ProOF is composed of two types of modules, called Client and Abstract. The Client module contain a set of classes, implemented in Java, responsible for tasks that enable the execution and integration of user code with other codes already implemented. Abstract are several distinct modules, each of which contains codes implemented in different the programming languages ??supported by ProOF. Currently, the ProOF supports the programming languages ??Java and C++. The Abstract modules are responsible for formatting the input and output of the code developed by the user so they can be interpreted by the Client module. Soon, the Abstract module provides the interface with which the user code developed in a particular language will communicate with Client module in Java. The figure below illustrates the current structure of ProOF, where the module Client  interacts with the Abstract  modules already developed in C++ and Java.
+
+<img src="https://raw.githubusercontent.com/marcio-da-silva-arantes/ProOF/master/wiki/proof-modules.png" align="center" width="600" >
+
+Thus the user must implement your code by according with the steps previously defined in Abstract module for one of the programing languages. These steps enable the Client module to communicate properly with the codes developed by the user. At the end of the implementation of the code by the user, the Client module records the version of the code developed, holds its compilation and interprets its parameters. After interpreting the parameters, the Client module can automatically generate a GUI which will get values ??for input parameters from user code.
+
+***
+
+### Installation
+
+#### Requirements
+
+Below is the requirements that must be satisfied before downloading and installing the ProOF. The environment is available for Windows and UNIX based operating systems, and the requirements are the same for both. For developers who will use the ProOF in both programming languages ??C++ and Java must also meet the same requirements, however in some specific case specific requirements are shown only to users of C++ or Java.
+
+* **Minimum** : Need at least 200 MB of RAM and 50 MB of free disk space.
+* **To** ( **Windows** and **UNIX**) : it takes the [Java SE Development Kit 7](http://www.oracle.com/technetwork/java/javase/downloads/jdk7-downloads-1880260.html?ssSourceSiteId=otnpt) installed.
+* **ProOF C++** : you need to install a compiler for the C++ language.
+    * **Windows** : recommended to use the [MinGW](http://sourceforge.net/projects/mingw/files/) compiler.
+    * **UNIX** : most UNIX based operating systems already come with a C++ native compiler, so this step may not exist.
+* **ProOF Java** : a compiler for the Java language must be installed, the *Java SE Development Kit 7* in step 2 already installed a  Java compiler.
+* **All** : you must configure the compilers C++ and Java in the environment variables for your operating system,  (Windows and UNIX).
+* **All** : [download](https://github.com/marcio-da-silva-arantes/ProOF/) the ProOF.
+
+#### Steps for installation
+
+1. Download the ProOF on [https://github.com/marcio-da-silva-arantes/ProOF/](https://github.com/marcio-da-silva-arantes/ProOF/).
+1. Configure the javac compiler in path of your operating system.
+1. If you are using IBM Ilog Cplex then:
+    * Copy the cplex.jar form IBM Ilog Cplex directory instalation to ./ProOFJava/lib/ directory
+    * Then copy the path cplex binaries (/bin/) in ./languages/Java.cfg (see this file Java.cfg)
+1. It's Alright, enjoy. 
+
+***
+
+### Publications
+
+Some publications which was used the ProOF for code development are listed below.
+
+#### Full papers published in journals
+
+> C. F. M. Toledo, M. S. Arantes, R. R. R. Oliveria, A. C. B. Delbem, A hybrid cGA applied to the MLCLSP with overtime, In: ACM Applied Computing Review, 2013.
+
+> C. F. M. Toledo, M. S. Arantes, R. R. R. Oliveria, B. Almada-Lobo, Glass container production scheduling through hybrid multi-population based evolutionary algorithm, In: Applied Soft Computing, 2013.
+
+#### Complete works published in proceedings of conferences
+
+> C. F. M. Toledo, M. S. Arantes, R. R. R. Oliveria, A. C. B. Delbem, A hybrid compact genetic algorithm applied to the multi-level capacitated lot sizing problem, In: ACM Symposium on Applied Computing, Coimbra, 2013.
+
+> C. F. M. Toledo, M. Y. B. Hossomi, M. S. Arantes, P. M. França, Genetic algorithm, MIP and improvement heuristic applied to the MLCLP with backlogging. In: IEEE Congress on Evolutionary Computation, Cancun, 2013.
+
+> C. F. M. Toledo, J. M. G. Lima, M. S. Arantes, A multi-population genetic algorithm approach for PID controller auto-tuning, In: IEEE Conference on Emerging Technologies & Factory Automation, Krakow, 2012.
