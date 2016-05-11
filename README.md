@@ -5,4 +5,3 @@ ProOF is a computational tool developed to assist professionals in implementing 
 
 The tool incorporates the same environment as the key features found in other tools of literature, guide the implementation of methods and problem solving with high reuse of code, supports generating code in different programming languages and maintains a Graphical User Interface (GUI ) for automatic parameterization methods entered by the user. Some published studies attest to the robustness of the tool, to incorporate the ProOF some methods that have been used for optimization and real world problems.
 
-![Graphical abstract](https://raw.githubusercontent.com/marcio-da-silva-arantes/ProOF/master/wiki/project-proof6.png)
