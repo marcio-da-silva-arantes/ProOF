@@ -9,7 +9,6 @@ import ProOF.apl.sample1.method.GeneticAlgorithm;
 import ProOF.apl.sample1.method.RandomAlgorithm;
 import ProOF.com.language.Factory;
 import ProOF.com.language.Run;
-import ProOF.CplexOpt.CplexModel;
 import ProOF.apl.advanced1.method.ACO;
 import ProOF.apl.advanced1.method.CLONALG;
 import ProOF.apl.advanced1.method.GRASP;
