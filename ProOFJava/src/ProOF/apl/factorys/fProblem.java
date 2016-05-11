@@ -9,7 +9,6 @@ package ProOF.apl.factorys;
 
 
 import ProOF.apl.sample1.problem.TSP.TSP;
-import ProOF.apl.sample2.problem.HTSP.HTSP;
 import ProOF.com.language.Factory;
 import ProOF.gen.codification.FunctionSingle.SingleBinRealFunction;
 import ProOF.gen.codification.FunctionSingle.SingleRealFunction;
@@ -37,7 +36,6 @@ public final class fProblem extends Factory<Problem>{
             case 2: return new SingleBinRealFunction(fRealSingle.obj,   fBinRealOperator.obj);
             case 3: return new MultiRealFunction    (fRealMulti.obj,    fRealOperator.obj);
             case 4: return new MultiBinRealFunction (fRealMulti.obj,    fBinRealOperator.obj);
-            case 5: return new HTSP();
         }
         return null;
     }

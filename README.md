@@ -1,4 +1,4 @@
-# ProOF
+# ProOF (Branch with out cplex)
 Professional Optimization Framework
 
 ProOF is a computational tool developed to assist professionals in implementing optimization methods and problem solving. The tool can be considered as a development environment (framework) and focuses primarily on guiding the implementation of computational methods and varied problems using the paradigm as object-oriented programming.

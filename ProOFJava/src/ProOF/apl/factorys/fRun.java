@@ -16,7 +16,6 @@ import ProOF.apl.advanced1.method.GRASP;
 import ProOF.apl.advanced1.method.LocalSearch;
 import ProOF.apl.advanced1.method.MPGA;
 import ProOF.apl.advanced1.method.MultiStart;
-import ProOF.apl.advanced2.method.RFFO;
 import ProOF.apl.sample1.method.BranchAndBound;
 import ProOF.apl.sample1.method.GreedyAlgorithm;
 import ProOF.apl.sample1.method.NSGAII;
@@ -48,15 +47,12 @@ public class fRun extends Factory<Run>{
             case 6: return new CLONALG(fStop.obj, fAIS.obj, fLocalImprovement.obj, fProblem.obj);
             case 7: return new ACO(fStop.obj, fProblem.obj);
             case 8: return new MPGA(fStop.obj, fPopulation.obj, fLocalImprovement.obj, fProblem.obj);
+
+            case 9: return new BranchAndBound();
+            case 10: return new GreedyAlgorithm();
             
-            case 9: return new CplexModel(fCplexFull.obj);
-            case 10: return new RFFO(fRFFOModel.obj);
-            
-            case 11: return new BranchAndBound();
-            case 12: return new GreedyAlgorithm();
-            
-            case 13: return new NSGAII();
-            case 14: return new Tabler();
+            case 11: return new NSGAII();
+            case 12: return new Tabler();
         }
         return null;
     }
