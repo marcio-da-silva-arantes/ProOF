@@ -1,0 +1,6 @@
+FILA  				NAME	LIMITE		TIME_MIN(s)	TIME_MAX(s)	CPU		USO	
+Seq_superfast       SSf		50			60			3600		1		0
+Seq_short           SSh     20			3601		86400		1		0
+Parallel_short      PSh     200			3601		86400		40		0
+Seq_long            SLo     20			86401		1209600		1		0
+Parallel_long       PLo     200			86401		1209600		40		0

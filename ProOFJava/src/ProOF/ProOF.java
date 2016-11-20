@@ -5,6 +5,7 @@
 package ProOF;
 
 import ProOF.apl.factorys.fRun;
+import ProOF.com.language.Approach;
 import ProOF.com.model.Model;
 import ProOF.com.runner.Runner;
 import ProOF.opt.abst.problem.meta.Best;
@@ -26,13 +27,21 @@ public class ProOF {
         boolean local = false;
         if (args == null || args.length == 0) {
             local = true;
-            args = new String[]{"run", "../work_space/job_local/waiting/task", "../work_space/input/"};
+            args = find_args("../work_space/", "task");
+            //args = new String[]{"run", "../work_space/job_local/waiting/task", "../work_space/input/"};
         }
         try{
             starting(args, local);
         }catch(Throwable ex){
             ex.printStackTrace(System.err);
-            PrintStream log = new PrintStream(new File("log_error.txt"));
+            
+            File file = null;
+            if(Approach.job==null){
+                file = new File("log_error.err");
+            }else{
+                file = new File(Approach.job.getName()+".err");
+            }
+            PrintStream log = new PrintStream(file);
             ex.printStackTrace(log);
             log.close();
         }
@@ -60,5 +69,15 @@ public class ProOF {
         } else {
             throw new Exception(String.format("arg[0]='%s' is not recognized.", args[0]));
         }
+    }
+    private static String[] find_args(String work_space, String job){
+        for(File dir : new File(work_space, "job_local").listFiles()){
+            for(File f : dir.listFiles()){
+                if(f.getName().equals(job)){
+                    return new String[]{"run", work_space+"/job_local/"+dir.getName()+"/"+job, work_space+"input"};
+                }
+            }
+        }
+        return null;
     }
 }
