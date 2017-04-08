@@ -25,6 +25,7 @@ public class ProOF {
      * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException, Exception {
+        Locale.setDefault(Locale.ENGLISH);
         boolean local = false;
         if (args == null || args.length == 0) {
             local = true;
