@@ -22,6 +22,7 @@ import java.util.Locale;
 public class ProOF { 
     /**
      * @param args the command line arguments
+     * @throws java.io.FileNotFoundException
      */
     public static void main(String[] args) throws FileNotFoundException, Exception {
         boolean local = false;
@@ -35,7 +36,7 @@ public class ProOF {
         }catch(Throwable ex){
             ex.printStackTrace(System.err);
             
-            File file = null;
+            File file;
             if(Approach.job==null){
                 file = new File("log_error.err");
             }else{

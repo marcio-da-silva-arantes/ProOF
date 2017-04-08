@@ -31,11 +31,8 @@ public class TSPFull extends CplexFull{
         return "TSP-full";
     }
     @Override
-    public void start() throws Exception {
-        model = new TSPmodel(inst, cpx);
-    }
-    @Override
     public void model() throws Exception {
+        model = new TSPmodel(inst, cpx);
         model.model(false);
         //cpx.exportModel("../../../TSP.lp");
     }

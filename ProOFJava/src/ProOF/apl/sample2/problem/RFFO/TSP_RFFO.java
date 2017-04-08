@@ -29,12 +29,9 @@ public class TSP_RFFO extends RFFOModel{
         super.services(link);
         inst = link.add(inst);
     }
-     @Override
-    public void start() throws Exception {
-        model = new TSPmodel(inst, cpx);
-    }
     @Override
     public void model() throws Exception {
+        model = new TSPmodel(inst, cpx);
         model.model(true);
         //cpx.exportModel("../../../TSP.lp");
     }
