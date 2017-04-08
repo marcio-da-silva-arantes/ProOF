@@ -19,6 +19,7 @@ public class TSPFull extends CplexFull{
     private TSPmodel model;
     
     public TSPFull() throws IloException {
+        super();
     }
 
     @Override

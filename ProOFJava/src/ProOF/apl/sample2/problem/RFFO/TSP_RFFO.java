@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class TSP_RFFO extends RFFOModel{
     public TSPInstance inst = new TSPInstance();
     private TSPmodel model;
-  
+    
     @Override
     public String name() {
         return "TSP-rffo";
