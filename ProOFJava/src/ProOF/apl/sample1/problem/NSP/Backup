@@ -1,0 +1,270 @@
+ if(codif.schedule[p][d]==s)
+                            {   dem--;
+                                list.removeFirstOccurrence(p);
+                            }
+                            else{
+                                if(codif.schedule[p][d] == 0){
+                                    list.removeFirstOccurrence(p);
+                                    dem--;
+                                }
+                            }
+/***
+    public  static void readFile() throws FileNotFoundException {
+       
+      //  FileReader fs = new FileReader(getFile());
+        FileReader fs = new FileReader(new File("/home/valdemar/NetBeansProjects/ProOF-master/ProOFJava/src/ProOF/apl/sample1/problem/NSP/Instance6.txt"));
+        try{
+            BufferedReader br = new BufferedReader(fs);
+               
+                String line  = null;
+                line = br.readLine();
+                
+                if(line.equalsIgnoreCase("SECTION_HORIZON"));
+                {   
+                    line = br.readLine();
+                    setNrDays(Integer.parseInt(line));
+                }
+                
+                setShifts(new Vector<Shift>());
+                line = br.readLine();
+                line = br.readLine();
+                
+                if(line.equalsIgnoreCase("SECTION_SHIFTS"))
+                {  
+                    while(!(line = br.readLine()).isEmpty()){
+                        String [] splitter = line.split("[,|]");
+                        
+                        
+                        Shift sf = new Shift();
+                        int e = 0;
+                        sf.setID(splitter[e]);
+                        e++;
+                        sf.setDuration(Integer.parseInt(splitter[e]));
+                        
+                        while((e+1)<splitter.length){
+                            String str1 = splitter[++e];
+                            sf.getForbiddenShifts().add(str1);
+                        }
+                        shifts.add(sf);
+                    }
+                }
+                
+                employees = new Vector<>();
+                
+                line = br.readLine();
+               if(line.equalsIgnoreCase("SECTION_STAFF"));
+                {   while(!(line = br.readLine()).isEmpty()){
+                        String [] splitter = line.split("[,|=]");
+                        int e = 0;
+                        
+                        Employee employee = new Employee();
+                        employee.setID(splitter[e]);
+                        Vector<Integer> eShifts = new Vector<>(shifts.size());
+                           
+                        for(int i = 0; i< shifts.size();i++){
+                            e+=2;
+                            eShifts.add(Integer.parseInt(splitter[e]));
+                        }
+                        
+                        employee.setMaxMinutes(Integer.parseInt(splitter[++e]));
+                        employee.setMinMinutes(Integer.parseInt(splitter[++e]));
+                        employee.setMaxCons(Integer.parseInt(splitter[++e]));
+                        employee.setMinCons(Integer.parseInt(splitter[++e]));
+                        employee.setMinDaysOff(Integer.parseInt(splitter[++e]));
+                        employee.setMaxWeekends(Integer.parseInt(splitter[++e]));
+                        employees.add(employee);
+                    }
+                }
+                
+                
+                line = br.readLine();
+                daysOff = new HashMap<>();
+                if(line.equalsIgnoreCase("SECTION_DAYS_OFF"));
+                { 
+                    while(!(line = br.readLine()).isEmpty()){                        
+                        String [] splitter = line.split("[,]");
+                        int e = 0;
+                        String physician = splitter[e];
+                        Vector <Integer> days = new Vector<>();
+                        
+                        while((e+1)<splitter.length){
+                            String str1 = splitter[++e];
+                            days.add(Integer.parseInt(str1));                            
+                        }
+                        daysOff.put(physician, days);
+                    }
+                }
+                
+                line = br.readLine();
+                on_reqs =  new HashMap<>();
+                if(line.equalsIgnoreCase("SECTION_SHIFT_ON_REQUESTS"));
+                { 
+                       
+                    while(!(line = br.readLine()).isEmpty()){
+                         
+                        String [] splitter = line.split("[,]");
+                        int e = 0;
+                        String cod = splitter[e];
+                        Integer day = Integer.parseInt(splitter[++e]);
+                        String sft = splitter[++e];
+                        int weight = Integer.parseInt(splitter[++e]);
+                        
+                        if(!on_reqs.containsKey(cod)){
+                            HashMap<String, Integer> m = new HashMap<>();
+                            m.put(sft, weight);
+                            HashMap<Integer, Map<String, Integer>> m2 = new HashMap<>();
+                            m2.put(day, m);
+                            on_reqs.put(cod, m2);
+                        }
+                        else{
+                                on_reqs.get(cod);
+                                if(!on_reqs.get(cod).containsKey(day))
+                                {
+                                    HashMap<String, Integer> m = new HashMap<>();
+                                    m.put(sft, weight);
+                                    on_reqs.get(cod).put(day, m);
+                                }
+                                else{
+                                    on_reqs.get(cod).get(day).put(sft,weight);                
+                                }
+                        }
+                    }
+                    
+                }
+                
+                line = br.readLine();
+                off_reqs =  new HashMap<>();
+                if(line.equalsIgnoreCase("SECTION_SHIFT_OFF_REQUESTS"));
+                { 
+                       
+                    while(!(line = br.readLine()).isEmpty()){
+                         
+                        String [] splitter = line.split("[,]");
+                        int e = 0;
+                        String cod = splitter[e];
+                        Integer day = Integer.parseInt(splitter[++e]);
+                        String sft = splitter[++e];
+                        int weight = Integer.parseInt(splitter[++e]);
+                        
+                        if(!off_reqs.containsKey(cod)){
+                            HashMap<String, Integer> m = new HashMap<>();
+                            m.put(sft, weight);
+                            HashMap<Integer, Map<String, Integer>> m2 = new HashMap<>();
+                            m2.put(day, m);
+                            off_reqs.put(cod, m2);
+                        }
+                        else{
+                                off_reqs.get(cod);
+                                if(!off_reqs.get(cod).containsKey(day))
+                                {
+                                    HashMap<String, Integer> m = new HashMap<>();
+                                    m.put(sft, weight);
+                                    off_reqs.get(cod).put(day, m);
+                                }
+                                else{
+                                    off_reqs.get(cod).get(day).put(sft,weight);                
+                                }
+                        }
+                    }
+                    
+                }
+                
+               
+                line = br.readLine();
+                covers =  new HashMap<>();
+                if(line.equalsIgnoreCase("SECTION_COVER"));
+                { 
+                       
+                    while((line = br.readLine()) != null && !line.isEmpty() && !line.equals("<TrueName>")){
+                         
+                        String [] splitter = line.split("[,]");
+                        int e = 0;
+                        
+                        int day = Integer.parseInt(splitter[e]);
+                        String sft = splitter[++e];
+                        int dem = Integer.parseInt(splitter[++e]);
+                        int oCost = Integer.parseInt(splitter[++e]);
+                        int uCost = Integer.parseInt(splitter[++e]);
+                        
+                        if(!covers.containsKey(day)){
+                            HashMap<Integer, Integer> m3 = new HashMap<>();
+                            m3.put(oCost, uCost);
+                            HashMap<Integer, Map<Integer,Integer>> m2 = new HashMap<>();
+                            m2.put(dem, m3);
+                            Map<String, Map<Integer, Map<Integer,Integer>>> m = new HashMap<>();
+                            m.put(sft, m2);
+                            
+                            covers.put(day, m);
+                        }
+                        else{
+                                
+                                if(!covers.get(day).containsKey(sft))
+                                { 
+                                    HashMap<Integer, Integer> m3 = new HashMap<>();
+                                    m3.put(oCost, uCost);
+                                    HashMap<Integer, Map<Integer,Integer>> m2 = new HashMap<>();
+                                    m2.put(dem, m3);
+                                    Map<String, Map<Integer, Map<Integer,Integer>>> m = new HashMap<>();
+                                    m.put(sft, m2);
+                                }
+                                else{  if(!covers.get(day).get(sft).containsKey(dem))
+                                        {
+                                            HashMap<Integer, Integer> m3 = new HashMap<>();
+                                            m3.put(oCost, uCost);
+                                            HashMap<Integer, Map<Integer,Integer>> m2 = new HashMap<>();
+                                            m2.put(dem, m3);
+                                            System.out.println(sft+" "+dem+" "+oCost+" "+uCost);                                            
+                                        }
+                                    else{
+                                          if(!covers.get(day).get(sft).get(dem).containsKey(oCost))
+                                            {
+                                                HashMap<Integer, Integer> m3 = new HashMap<>();
+                                                m3.put(oCost, uCost);
+                                                System.out.println(dem+" "+oCost+" "+uCost);                                            
+                                            }
+                                            else{
+                                                covers.get(day).get(sft).get(dem).put(oCost,uCost);  
+                                                System.out.println(oCost+" "+uCost);     
+                                            }
+                                        }            
+                                }
+                        }
+                    }
+                    
+                }
+                /**
+                
+               for(Integer s:covers.keySet()){
+                   
+                   for(String a: covers.get(s).keySet())
+                   {
+                        for(Integer b: covers.get(s).get(a).keySet())
+                        {
+                            System.out.println(s+","+a+","+b+","+covers.get(s).get(a).get(b).keySet());
+                            for(Integer c: covers.get(s).get(a).get(b).keySet())
+                            {
+                                System.out.print(s+","+a+","+b+","+c+","+covers.get(s).get(a).get(b).get(c).toString());
+                            }
+                        }
+                   }
+                   System.out.println("");
+               }
+               
+        }catch (IOException e) {
+        	e.printStackTrace();
+            }   
+            finally {
+
+                        try {
+                                fs.close();
+                            }catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+                    }
+    }
+    
+    public static void main(String a[]) throws FileNotFoundException{
+      //  readFile();
+    }
+    
+    */

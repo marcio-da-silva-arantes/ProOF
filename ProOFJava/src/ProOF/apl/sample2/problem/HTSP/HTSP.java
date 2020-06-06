@@ -4,7 +4,7 @@
  */
 package ProOF.apl.sample2.problem.HTSP;
 
-import ProOF.CplexExtended.CplexExtended;
+import CplexExtended.CplexExtended;
 import ProOF.apl.sample1.problem.TSP.*;
 import ProOF.apl.sample2.problem.cplex.TSPmodel;
 import ProOF.com.Linker.LinkerApproaches;

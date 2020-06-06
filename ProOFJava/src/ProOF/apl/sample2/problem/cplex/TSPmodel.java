@@ -5,7 +5,7 @@
  */
 package ProOF.apl.sample2.problem.cplex;
 
-import ProOF.CplexExtended.CplexExtended;
+import CplexExtended.CplexExtended;
 import ProOF.apl.sample1.problem.TSP.TSPInstance;
 import ilog.concert.IloNumExpr;
 import ilog.concert.IloNumVar;
