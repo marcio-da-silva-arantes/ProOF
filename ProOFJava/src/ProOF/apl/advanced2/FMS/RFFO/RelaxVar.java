@@ -5,7 +5,7 @@
  */
 package ProOF.apl.advanced2.FMS.RFFO;
 
-import ProOF.CplexExtended.CplexExtended;
+import CplexExtended.CplexExtended;
 import ilog.concert.IloException;
 import ilog.concert.IloNumVar;
 import ilog.concert.IloNumVarType;

@@ -10,7 +10,7 @@ import ProOF.com.Linker.LinkerParameters;
 import ProOF.com.Linker.LinkerResults;
 import ProOF.com.Linker.LinkerValidations;
 import ProOF.com.language.Approach;
-import ProOF.CplexExtended.CplexExtended;
+import CplexExtended.CplexExtended;
 import ProOF.utilities.uDataDown;
 import ProOF.utilities.uDataUp;
 import ProOF.utilities.uSort;
