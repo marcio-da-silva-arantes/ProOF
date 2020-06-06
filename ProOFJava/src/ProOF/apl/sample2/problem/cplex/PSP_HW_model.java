@@ -33,7 +33,7 @@ import java.util.Vector;
  *
  * @author dexter
  */
-public class PSPmodel {
+public class PSP_HW_model {
     public final EasyInstance inst;
     public final CplexExtended cpx;  
     public IloNumVar[][][] X, TS;   //binary relaxed
@@ -43,127 +43,22 @@ public class PSPmodel {
     IloNumVar[] TW, UW, L1W;
     
     
-    private IloNumVar[][] UH;
+    private IloNumVar[][] UH, L1H;
+
+    private IloNumVar LINFW, LINFH;
     
     public IloNumExpr ObjF1, ObjF2, ObjF3, ObjF4, ObjF5, ObjF6;    
-    private IloNumExpr ObjValue;
+    private IloNumExpr ObjValue,ObjValue2;
     
        
     
     double start[][][];
                    
-    public PSPmodel(EasyInstance inst, CplexExtended cpx) throws IloException {
+    public PSP_HW_model(EasyInstance inst, CplexExtended cpx) throws IloException {
         this.inst = inst;
         this.cpx = cpx;
     }
-    
-    public void getFromModel(PSP prob, cPSP codif) throws IloException, Exception{
-      
-        
-        for(int i=0;i<inst.getNOE();i++)
-        {
-            for(int j=0;j<inst.getNOD(); j++)
-            { 
-                boolean flag = false;
-                for(int k = 0; k<inst.getNOS();k++){
-                    
-                    if(this.cpx.getValue(X[i][j][k])  > 0.5)
-                    {
-                        flag = true;
-                        codif.schedule[i][j]= k+1;
-                    }                    
-                }
-                
-                if(!flag)
-                    codif.schedule[i][j]= 0;
-                
-            }                
-        }
-    }
-     
-    public void startSolutionFromHeuristic(EasyInstance inst, cPSP codif) throws IloException, Exception{
-           
-        
-        if(codif.schedule!=null)
-        {
-            for(int i=0;i<inst.getNOE();i++)
-            {
-                for(int j=0;j<inst.getNOD(); j++)
-                {
-                  //  int k = (int) Math.random()*inst.getNOS();
-                    for(int k = 0; k<inst.getNOS();k++){
-                            if(codif.schedule[i][j]== k+1)
-                            {   
-                                X[i][j][k].setLB(1);
-                                X[i][j][k].setUB(1);
-                            }                    
-                            else{
-                                X[i][j][k].setLB(0);
-                                X[i][j][k].setUB(0);
-                            }
-
-                    }
-                }                
-            }
-        } 
-    }
-
-    
-     public void startSolutionFromFile(EasyInstance inst) throws IloException, Exception{
-      
-        //String csvFile = "/home/claudio/Documentos/Code/ProOF-master/see.csv";
-        String csvFile = "/home/claudio/NetBeansProjects/ProOF-master/ProOFJava/src/ProOF/apl/sample2/problem/cplex/Teste.csv";
-        BufferedReader br = null;
-        String line = "";
-        String cvsSplitBy = ",";
-        
-        try {
-            br = new BufferedReader(new FileReader(csvFile));
-            int a =0;
-            while ((line = br.readLine()) != null) {
-                String[] phySched = line.split(cvsSplitBy);
-                int i=0;
-            //    System.out.println(" "+line);
-            //    System.out.println(" "+inst.getNOD());
-                
-                for(int b=0;b<inst.getNOD();b++)
-                {
-                    for(int c=0;c < inst.getNOS();c++)
-                    {  
-                        int value = Integer.parseInt(phySched[i]);
-                   //     System.out.println("X["+a+"]["+b+"]["+c+"]: "+value); 
-                        
-                        if( value == c+1)
-                        {
-                            X[a][b][c].setUB(1);
-                            X[a][b][c].setLB(1);
-                        }
-                        else{
-                            X[a][b][c].setUB(0);
-                            X[a][b][c].setLB(0);                        
-                        }
-                       // System.out.println("X["+a+"]["+b+"]["+c+"]: "+ cpx.getValue(X[a][b][c])); 
-                //        System.out.println("X["+a+"]["+b+"]["+c+"]: "+(int)X[a][b][c].getLB()+" - "+(int)X[a][b][c].getUB());                      
-                    }    
-                    i++;
-                }
-                System.out.println(" ");
-                a++;
-            }  
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (br != null) {
-                try {
-                    br.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
+   
      
     
     public void model(boolean relaxed) throws Exception {
@@ -180,8 +75,18 @@ public class PSPmodel {
         Z = cpx.numVarArray(inst.getNOD(), inst.getNOS(), 0, 100, "Z"); //demand surplass
         Y = cpx.numVarArray(inst.getNOD(), inst.getNOS(), 0, 100, "Y"); //demand 
             
+        Dem  = cpx.numVarArray(inst.getNOD(), inst.getNOS(), 1, 20,"Dem");        
         
         UH  = cpx.numVarArray(inst.getNOE(), inst.getMonths(), 0, Double.POSITIVE_INFINITY,"UH");
+        TH  = cpx.numVarArray(inst.getNOE(), inst.getMonths(), 0, Double.POSITIVE_INFINITY,"TH");
+        L1H  = cpx.numVarArray(inst.getNOE(), inst.getMonths(), 0, Double.POSITIVE_INFINITY,"LOH");
+        LINFH = cpx.numVar(0, Double.POSITIVE_INFINITY,"LINFH");
+        
+        
+        TW  = cpx.numVarArray(inst.getNOE(), 0, Double.POSITIVE_INFINITY,"TW"); //for weekends
+        UW  = cpx.numVarArray(inst.getNOE(), 0, Double.POSITIVE_INFINITY,"UW"); //for weekends
+        L1W  = cpx.numVarArray(inst.getNOE(), 0, Double.POSITIVE_INFINITY,"L0W"); //for weekends
+        LINFW = cpx.numVar(0, Double.POSITIVE_INFINITY,"LINFW");
         
         
         /*---------------------------------------------------------------------
@@ -258,13 +163,33 @@ public class PSPmodel {
                 int mod = inst.getMLenght()%(cons+mDOff);
                 slotts = slotts*cons + mod;
 
+                int mH = slotts*inst.longestShift();
+                
+               // ObjF5 = cpx.SumNumScalProd(ObjF5, "Hours", 128, mH, 100, UH[p][m]);
+                //L1H NORM
+             //   ObjF5 = cpx.SumProd(ObjF5, 100, L1H[p][m]);
+             //   ObjF5 = cpx.SumProd(ObjF5, 100, LINFH);
+                
               //  ObjF5 = cpx.SumProd(ObjF5, 100, cpx.square(UH[p][m]));
                 ObjF5 = cpx.SumProd(ObjF5, 1, UH[p][m]); 
                 
                 //to test - 80 and 100.
             }
         }        
+        
+        ObjF6  = null;
+        for(int p=0; p<inst.getNOE(); p++){
+                //int mH = slotts*inst.longestShift();
+                
+          //  ObjF6 = cpx.SumNumScalProd(ObjF6, "Weeks", 128, inst.getWeeks(), 100, UW[p]);
+          //  ObjF6 = cpx.SumProd(ObjF6, 100, L1W[p]);
+        //    ObjF6 = cpx.SumProd(ObjF6, 100, LINFW);
+           // ObjF6 = cpx.SumProd(ObjF6, 100, cpx.square(UW[p]));
+         //   ObjF6 = cpx.SumProd(ObjF6, 100, UW[p]);
+        }       /** */
+        
         ObjValue = cpx.sum(ObjF1, ObjF2, ObjF3, ObjF4, ObjF5);
+     //   ObjValue2 = cpx.sum(ObjF5, ObjF6);
         
         cpx.addMinimize(ObjValue);
         
@@ -278,6 +203,8 @@ public class PSPmodel {
         hc2();
         /**Maximum numbers of shifts. */
         hc3();
+        /**Minimum and maximum work time. */
+    //    hc4();
         /**Maximum consecutive shifts. */
         hc5();
         /**Minimum consecutive shifts. */
@@ -291,9 +218,9 @@ public class PSPmodel {
         /** Demand. */
        
         /** balanced hours. */
-        fc1();
+        fc2();
         /** Shifts balance. */
-        sc1();        
+        sc2();        
         
         
         cpx.exportModel("PSP_"+inst.getNOE()+"_"+inst.getNOD()+"_"+inst.getNOS()+".lp");
@@ -488,6 +415,26 @@ public class PSPmodel {
     }
     
     /**
+     * Maximum total minutes. 
+     * the maximum amount of total time in minutes that can be assigned to each nurse within the
+        planning period.
+     */
+    private void hc4() throws Exception {
+        for(int i=0; i< inst.getNOE(); i++)
+        {   
+            IloNumExpr Sum_Xijk[][] = new IloNumExpr[inst.getNOD()][inst.getNOS()];
+            
+            for(int d=0; d< inst.getNOD(); d++){
+                for(int s=0; s< inst.getNOS(); s++){
+                    Sum_Xijk[d][s] = cpx.prod(X[i][d][s], inst.getShifts().get(s).getDuration());
+                }
+            }            
+          
+            cpx.addGe(cpx.Sum(cpx.Sum(Sum_Xijk)),  inst.getEmployees().get(i).getMinMinutes(), "minMinutes("+i+")");   
+            cpx.addLe(cpx.Sum(cpx.Sum(Sum_Xijk)), inst.getEmployees().get(i).getMaxMinutes(), "maxMinutes("+i+")");
+        }
+    }
+    /**
      * Maximum consecutive shifts. The maximum number of
         consecutive shifts, which are allowed to be worked within the
         planning period.
@@ -619,6 +566,42 @@ public class PSPmodel {
            
         }
     }
+    private void hc8F() throws Exception, IloException {  
+        
+        for(int p=0; p < this.inst.getNOE(); p++)
+        {
+            IloNumExpr Sum_Kiw[] = new IloNumExpr[inst.getWeeks()];
+            for(int d=5, w =0; d< this.inst.getNOD() && w < inst.getWeeks(); d+=7, w++){
+                   
+                IloNumExpr Sum_Xist[] = new IloNumExpr[inst.getNOS()];
+                IloNumExpr Sum_Xisd[] = new IloNumExpr[inst.getNOS()];
+                for(int t = 0; t < this.inst.getNOS(); t++)
+                {
+                    Sum_Xist[t] = X[p][d][t];
+                    if((d+1)<inst.getNOD())
+                        Sum_Xisd[t] = X[p][d+1][t];
+                }
+                Sum_Kiw[w] = K[p][w];
+                cpx.addLe(cpx.sum(cpx.Sum(Sum_Xist), cpx.Sum(Sum_Xisd)), cpx.prod(2, K[p][w]), "weekends("+p+","+w+")");
+                cpx.addGe(cpx.sum(cpx.Sum(Sum_Xist), cpx.Sum(Sum_Xisd)), K[p][w], "weekends("+p+","+w+")");
+            }
+               
+            
+            cpx.addLe(TW[p],inst.getEmployees().get(p).getMaxWeekends());
+            cpx.addLe(UW[p], inst.getEmployees().get(p).getMaxWeekends());
+            
+            cpx.addGe(cpx.Sum(Sum_Kiw), cpx.sum(cpx.prod(-1, UW[p]), TW[p]), "weekBal["+p+"]");  
+            cpx.addLe(cpx.Sum(Sum_Kiw), cpx.sum(UW[p], TW[p]), "weekBal["+p+"]");
+            
+            
+                
+            cpx.addLe(UW[p], LINFW, "LINF");
+            cpx.addLe(cpx.prod(-1, UW[p]), LINFW, "LINF");
+            
+        }
+    }
+   /* */
+    
     /**
      Requested days off.
      * shifts must not be assigned to a specified nurse on some specified days
@@ -637,7 +620,36 @@ public class PSPmodel {
         }        
     }
     
-    private void sc1() throws IloException {
+    private void sc1() throws IloException { 
+       
+        for(int j=0; j<inst.getNOD(); j++){
+            for(Shift sft: inst.getShifts()){
+                int k = inst.getShifts().indexOf(sft);
+                IloNumExpr Sum_X[] = new IloNumExpr[inst.getNOE()];
+                
+                for(int i=0; i<inst.getNOE(); i++){
+                       Sum_X[i] = X[i][j][k];
+                }
+                
+            /**    for (Integer dem: inst.getCovers().get(j).get(sft.getID()).keySet())
+                {   
+                    cpx.addLe(cpx.sum(cpx.Sum(Sum_X), cpx.prod(-1, Z[j][k])), dem, "demand("+j+","+k+")");
+                    cpx.addGe(cpx.sum(cpx.Sum(Sum_X), Y[j][k]), dem, "demand("+j+","+k+")");
+                } 
+            */    
+                for (Integer dem: inst.getCovers().get(j).get(sft.getID()).keySet())
+                {   //cpx.addLe(Dem[j][k], dem);
+                    cpx.addGe(Dem[j][k], 2);
+                }
+                cpx.addLe(cpx.sum(cpx.Sum(Sum_X), cpx.prod(-1, Z[j][k])), Dem[j][k], "demand("+j+","+k+")");
+                cpx.addGe(cpx.sum(cpx.Sum(Sum_X), Y[j][k]), Dem[j][k], "demand("+j+","+k+")");
+             
+            }
+        }
+    }
+        
+   
+    private void sc2() throws IloException {
         
         for(int j=0; j<inst.getNOD(); j++){
             for(Shift sft: inst.getShifts()){
@@ -675,14 +687,52 @@ public class PSPmodel {
                 }
                 
                 IloNumExpr sum = cpx.Sum(cpx.Sum(Sum_Xijk));
-                                
+                 
+                
+                
                 
                 cpx.addLe(sum, cpx.sum(UH[p][m], TARGET ), "Hours["+p+"]["+m+"]");
                 cpx.addGe(sum, cpx.sum(cpx.prod(-1, UH[p][m]), TARGET), "Hours["+p+"]["+m+"]");  
                 cpx.addLe(UH[p][m], TARGET, "DEV["+p+"]["+m+"]");
-           
+            //    cpx.addLe(TH[p][m], rest, "TARG["+p+"]["+m+"]");   
+                
+                         //    
+                //cpx.addLe(UH[p][m], L1H[p][m], "L0H["+p+"]["+m+"]");
+                //   cpx.addLe(cpx.prod(-1, UH[p][m]) , L1H[p][m], "L0H["+p+"]["+m+"]");
+                
+             //   cpx.addLe(UH[p][m], LINFH, "LINFH["+p+"]["+m+"]");
+              //  cpx.addLe(cpx.prod(-1, UH[p][m]), LINFH, "LINFH["+p+"]["+m+"]");
             }
         }
-    }  
+    }   
+    
+    
+    private void fc2() throws Exception {
+        for(int p=0; p< inst.getNOE(); p++)
+        {
+            int value = inst.getEmployees().get(p).getMaxCons()+inst.getEmployees().get(p).getMinDaysOff();
+            
+            int rest = (int) Math.round(inst.getMLenght()/value);
+            rest = rest*inst.longestShift()*inst.getEmployees().get(p).getMaxCons();
+            
+           
+            for(int m=0; m<inst.getMonths(); m++){
+                IloNumExpr Sum_Xijk[][] = new IloNumExpr[inst.getMLenght()][inst.getNOS()];
+        
+                for(int d=inst.beginingM(m), a = 0; d< inst.endingM(m) && a<inst.getMLenght(); d++, a++){
+                    for(int s=0; s< inst.getNOS(); s++){
+                        Sum_Xijk[a][s] = cpx.prod(X[p][d][s], inst.getShifts().get(s).getDuration());
+                    }
+                }
+                
+                IloNumExpr sum = cpx.Sum(cpx.Sum(Sum_Xijk));
+                
+                cpx.addLe(sum, cpx.sum(UH[p][m], TH[p][m] ), "Hours["+p+"]["+m+"]");
+                cpx.addGe(sum, cpx.sum(cpx.prod(-1, UH[p][m]), TH[p][m]), "Hours["+p+"]["+m+"]");  
+                cpx.addLe(UH[p][m], rest, "DEV["+p+"]["+m+"]");
+                cpx.addLe(TH[p][m], rest, "TARG["+p+"]["+m+"]");   
+            }
+        }
+    }   
     
 }

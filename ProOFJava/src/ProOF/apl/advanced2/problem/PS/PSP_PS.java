@@ -53,7 +53,7 @@ public class PSP_PS  extends PSModel{
     @Override
     public void start() throws Exception {
         super.start(); //To change body of generated methods, choose Tools | Templates.
-        startSolutionFromHeuristic(inst);
+     //   startSolutionFromHeuristic(inst);
     }
 
     
